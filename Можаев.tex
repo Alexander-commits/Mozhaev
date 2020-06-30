@@ -1,0 +1,101 @@
+\documentclass[11pt]{article}
+
+\usepackage[utf8]{inputenc}
+\usepackage[russian]{babel}
+\usepackage{algorithm}
+\usepackage[noend]{algpseudocode}
+
+\begin{document}
+\linespread{1.3}
+
+\newcommand{\eps}{\varepsilon}
+\newcommand{\inprod}[1]{\left\langle #1 \right\rangle}
+
+\newcommand{\handout}[5]{
+	\noindent
+	\begin{center}
+		\framebox{
+			\vbox{
+				\hbox to 5.78in { {\bf Научно-исследовательская практика} \hfill #2 }
+				\vspace{4mm}
+				\hbox to 5.78in { {\Large \hfill #5  \hfill} }
+				\vspace{2mm}
+				\hbox to 5.78in { {\em #3 \hfill #4} }
+			}
+		}
+	\end{center}
+	\vspace*{4mm}
+}
+
+\newcommand{\lecture}[4]{\handout{#1}{#2}{#3}{Автор: #4}{Извлечение квадратных корней в конечном поле #1}}
+
+\topmargin 0pt
+\advance \topmargin by -\headheight
+\advance \topmargin by -\headsep
+\textheight 8.9in
+\oddsidemargin 0pt
+\evensidemargin \oddsidemargin
+\marginparwidth 0.5in
+\textwidth 6.5in
+
+\parindent 0in
+\parskip 1.5ex
+\lecture{}{Лето 2020}{}{Можаев Александр}	
+
+\section{Алгоритм Тонелли-Шенкса }
+
+\begin{algorithm}
+	
+	\caption{Тонелли-Шенкса}
+	\label{alg:AlgName}
+	\textbf{Input:}\\
+	$p$ - нечётное простое число; \\
+	$n$ - целое число, являющееся квадратичным вычетом по модулю $p$. \\
+	\textbf{Output:}\\
+	Вычет $R$, удовлетворяющий сравнению $R^{2}\equiv n\: (mod\:p)$.
+	
+	\begin{algorithmic}[1]
+		
+		\State Выделить степени двойки из $p-1$, то есть положить $p-1= 2^{S}Q$, где Q-нечётно, {$S \geq 1$}. Если $S=1$, т.е. {$p\equiv 3\: (mod\:4)$}, решение имеет вид $R\equiv \pm\: n^{p+1 \over {4}}$. 
+		\State Положить {$S \geq 2$}. Выбрать произвольный квадратичный невычет $z$, т.е. $({z \over {p}}) = -1$. Задать $c \equiv z^{Q}\: (mod\:p)$.
+		\State Положить $R\equiv n^{Q+1 \over {2}}\:(mod\:p)$, $t\equiv n^{Q}\:(mod\:p)$, $M = S$. 
+		\State \textbf{Пока} $t \neq 1$:
+			\begin{algorithmic}[1]
+				\State \textbf{Если} $t\equiv 1\:(mod\:p)$, то выход и ответ $R$.
+				\State \textbf{Иначе для} $i = 1$ до $m$ искать $i$ такое, что $t^{2^{i}}\equiv 1\:(mod\:p)$ 
+				\State Положить $b\equiv c^{2^{M-i-1}}\:(mod\:p)$, $R\equiv Rb\:(mod\:p)$, $t\equiv tb^{2}\:(mod\:p)$, $c\equiv b^{2}\:(mod\:p)$, $M = i$, вернуться к началу цикла.
+			\end{algorithmic}	
+	   \Statex Ответ: $R, p-R$.	
+	\end{algorithmic}
+\end{algorithm}
+
+\newpage
+
+\section{Анализ}
+\subsection{Описание машины}
+
+Лабораторная работа была сделана на {\textit Sage} — системе компьютерной алгебры, покрывающей много областей математики, включая алгебру, комбинаторику, вычислительную математику и матанализ.
+
+\subsection{Сравнение}
+Было произведено 3 теста с различными значениями, в ходе которых я пришел к выводу, что встроенный алгоритм извлечения квадратного корня по простому модулю работает для больших чисел медленнее,чем Алгоритм Тонелли-Шенкса. Сравнение времени работы двух алгоритмов представлено в виде таблицы: 
+\\
+
+\begin{center}
+\begin{tabular}{|c|c|c|c|c|}
+	\hline
+	
+	\multicolumn{2}{|c|}{Входные параметры} & \multicolumn{2}{|c|}{Время}\\
+	\hline
+	$Число n$ & $Модуль p$ & Тонелли-Шенкса & Встроенный\\[5pt] 
+	\hline
+	$46^{12}$ & \verb|next_prime|$(10^{86})$ & 594 мкс. & 92,5 мс.\\
+	\hline
+	$4166^{112}$ & \verb|next_prime|$(10^{459})$ & 3.73 мс. & 14.9 сек.\\
+	\hline
+    $486^{175}$ & \verb|next_prime|$(10^{1886})$ & 18.4 мс. & 1 мин. 26 сек.\\
+	\hline	
+\end{tabular}	
+\end{center}
+
+
+\end{document}
