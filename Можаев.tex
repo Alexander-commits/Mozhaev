@@ -4,7 +4,8 @@
 \usepackage[russian]{babel}
 \usepackage{algorithm}
 \usepackage[noend]{algpseudocode}
-
+\usepackage{biblatex}
+\addbibresource{sample.bib}
 \begin{document}
 \linespread{1.3}
 
@@ -46,24 +47,24 @@
 
 \begin{algorithm}
 	
-	\caption{Тонелли-Шенкса}
+	\caption{Тонелли--Шенкса}
 	\label{alg:AlgName}
 	\textbf{Input:}\\
-	$p$ - нечётное простое число; \\
-	$n$ - целое число, являющееся квадратичным вычетом по модулю $p$. \\
+	$p$ -- нечётное простое число; \\
+	$n$ -- целое число, являющееся квадратичным вычетом по модулю $p$. \\
 	\textbf{Output:}\\
-	Вычет $R$, удовлетворяющий сравнению $R^{2}\equiv n\: (mod\:p)$.
+	Вычет $R$, удовлетворяющий сравнению $R^{2}\equiv n \pmod p$.
 	
 	\begin{algorithmic}[1]
 		
-		\State Выделить степени двойки из $p-1$, то есть положить $p-1= 2^{S}Q$, где Q-нечётно, {$S \geq 1$}. Если $S=1$, т.е. {$p\equiv 3\: (mod\:4)$}, решение имеет вид $R\equiv \pm\: n^{p+1 \over {4}}$. 
-		\State Положить {$S \geq 2$}. Выбрать произвольный квадратичный невычет $z$, т.е. $({z \over {p}}) = -1$. Задать $c \equiv z^{Q}\: (mod\:p)$.
-		\State Положить $R\equiv n^{Q+1 \over {2}}\:(mod\:p)$, $t\equiv n^{Q}\:(mod\:p)$, $M = S$. 
+		\State Выделить степени двойки из $p-1$, то есть положить $p-1= 2^{S}Q$, где Q-нечётно, {$S \geq 1$}. Если $S=1$, т.е. {$p\equiv 3 \pmod 4 $}, решение имеет вид $R\equiv \pm\: n^{p+1 \over {4}}$. 
+		\State Положить {$S \geq 2$}. Выбрать произвольный квадратичный невычет $z$, т.е. $({z \over {p}}) = -1$. Задать $c \equiv z^{Q} \pmod p$.
+		\State Положить $R\equiv n^{Q+1 \over {2}} \pmod p$, $t\equiv n^{Q} \pmod p$, $M = S$. 
 		\State \textbf{Пока} $t \neq 1$:
 			\begin{algorithmic}[1]
-				\State \textbf{Если} $t\equiv 1\:(mod\:p)$, то выход и ответ $R$.
+				\State \textbf{Если} $t\equiv 1 \pmod p$, то выход и ответ $R$.
 				\State \textbf{Иначе для} $i = 1$ до $m$ искать $i$ такое, что $t^{2^{i}}\equiv 1\:(mod\:p)$ 
-				\State Положить $b\equiv c^{2^{M-i-1}}\:(mod\:p)$, $R\equiv Rb\:(mod\:p)$, $t\equiv tb^{2}\:(mod\:p)$, $c\equiv b^{2}\:(mod\:p)$, $M = i$, вернуться к началу цикла.
+				\State Положить $b\equiv c^{2^{M-i-1}} \pmod p$, $R\equiv Rb \pmod p$, $t \equiv tb^{2} \pmod p$, $c \equiv b^{2} \pmod p$, $M = i$, вернуться к началу цикла.
 			\end{algorithmic}	
 	   \Statex Ответ: $R, p-R$.	
 	\end{algorithmic}
@@ -74,7 +75,16 @@
 \section{Анализ}
 \subsection{Описание машины}
 
-Лабораторная работа была сделана на {\textit Sage} — системе компьютерной алгебры, покрывающей много областей математики, включая алгебру, комбинаторику, вычислительную математику и матанализ.
+Лабораторная работа была сделана на {\textit Sage} -- системе компьютерной алгебры, покрывающей много областей математики, включая алгебру, комбинаторику, вычислительную математику и матанализ.
+
+Характеристики компьютера, на котором проводилось тестирование:
+\begin{itemize}
+	\item 64-разрядная операционная система Windows 10 Pro.
+	\item Процессор: Intel(R) Core(TM) i5-8400, ядро Coffee Lake S, 
+	количество ядер и потоков: 6, базовая частота 2.80 ГГц,частота в режиме boost 4.0 ГГц.
+	\item Оперативная память: 2x8 Gb DDR4 CORSAIR Vengeance,3000 МГц.
+	\item Версия системы SageMath: 9.0.
+\end{itemize}
 
 \subsection{Сравнение}
 Было произведено 3 теста с различными значениями, в ходе которых я пришел к выводу, что встроенный алгоритм извлечения квадратного корня по простому модулю работает для больших чисел медленнее,чем Алгоритм Тонелли-Шенкса. Сравнение времени работы двух алгоритмов представлено в виде таблицы: 
@@ -96,6 +106,8 @@
 	\hline	
 \end{tabular}	
 \end{center}
-
-
+\begin{thebibliography}{1}	
+	\bibitem{Cohen H.}
+	Cohen H. A course in computational algebraic number theory.-- 1993, стр. 32--34.
+\end{thebibliography}
 \end{document}
